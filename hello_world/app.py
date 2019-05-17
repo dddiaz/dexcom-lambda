@@ -48,6 +48,17 @@ def fetch(minutes=1440, max_count=1):
     return result.text
 
 
+def convert(response):
+    """Convert the response text from dexcom into something a little more friendly
+    """
+    pass
+
+
+def post_to_timestream():
+    pass
+
+
+
 # // ?sessionID=e59c836f-5aeb-4b95-afa2-39cf2769fede&minutes=1440&maxCount=1"
 
 DEFAULTS = {

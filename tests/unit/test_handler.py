@@ -62,6 +62,10 @@ def apigw_event():
     }
 
 
+def test_convert():
+    pass
+
+
 def test_lambda_handler(apigw_event, mocker):
 
     ret = app.lambda_handler(apigw_event, "")
