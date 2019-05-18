@@ -3,7 +3,14 @@ Transform: AWS::Serverless-2016-10-31
 Description: >
   sam-app
 
-  Sample SAM Template for sam-app
+  Serverless Application to scrape glucose data from dexcom and save to a DynamoDB
+
+
+Parameters:
+    DEXCOMACCOUNTNAME:
+        Type: String
+    DEXCOMPASSWORD:
+        Type: String
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
@@ -11,29 +18,47 @@ Globals:
     Timeout: 3
 
 Resources:
-  HelloWorldFunction:
+  PollDexcomFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: hello_world/
+      CodeUri: cron/
       Handler: app.lambda_handler
       Runtime: python3.7
+      Environment:
+        Variables:
+          DEXCOM_ACCOUNT_NAME: !Sub "${DEXCOMACCOUNTNAME}"
+          DEXCOM_PASSWORD: !Sub "${DEXCOMPASSWORD}"
+          REGION: !Ref "AWS::Region"
       Events:
-        HelloWorld:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+        PollDexcomScheduledEvent:
+          Type: Schedule
           Properties:
-            Path: /hello
-            Method: get
+            Schedule: rate(5 minutes)
+      Policies:
+        # Give just CRUD permissions to one table
+        - DynamoDBCrudPolicy:
+            TableName: !Ref GlucoseTable
+  GlucoseTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: Glucose
+      AttributeDefinitions:
+        - AttributeName: timestamp
+          AttributeType: N
+      KeySchema:
+        - AttributeName: timestamp
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
 
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  HelloWorldApi:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloWorldFunction:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionIamRole:
+  PollDexcomFunction:
+    Description: "PollDexcom Lambda Function ARN"
+    Value: !GetAtt PollDexcomFunction.Arn
+  PollDexcomFunctionIamRole:
     Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt HelloWorldFunctionRole.Arn
+    Value: !GetAtt PollDexcomFunctionRole.Arn
+  GlucoseTable:
+    Description: "GlucoseTableARN"
+    Value: !GetAtt GlucoseTable.Arn

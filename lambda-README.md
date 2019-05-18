@@ -62,7 +62,7 @@ AWS Lambda Python runtime requires a flat folder with all dependencies including
     HelloWorldFunction:
         Type: AWS::Serverless::Function
         Properties:
-            CodeUri: hello_world/
+            CodeUri: cron
             ...
 ```
 

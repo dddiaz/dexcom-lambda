@@ -1,4 +1,4 @@
-from hello_world import app
+from cron import app
 
 
 def test_authorize():
