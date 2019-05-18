@@ -15,6 +15,9 @@ The reason I decided to make this was for a couple reasons:
 - 1 AWS Python Lambda Function
 - 1 Dynamo DB Table
 
+## I cant tell where the source code is:
+- Navigate to the cron foler, there you should see a file called app.py. That is where the logic lies.
+
 ## How Can I get Started:
 
 #### Prereqs:
@@ -60,3 +63,8 @@ BY: Ben West
 
 #### Random Helpful Links
 https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.Python.03.html
+
+
+#### TODO
+- Add License?
+- Add launchstack url
