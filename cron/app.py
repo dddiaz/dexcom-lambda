@@ -12,7 +12,7 @@ logger.setLevel(logging.INFO)
 # This is a param of the AWS SAM template, and will be configured there.
 DEXCOM_ACCOUNT_NAME = os.environ['DEXCOM_ACCOUNT_NAME']
 DEXCOM_PASSWORD = os.environ['DEXCOM_PASSWORD']
-REGION = os.getenv('REGION', 'us-west-2')
+REGION = os.getenv('REGION', 'us-west-1')
 
 # I want lambda to try and use the already computed session id if it has already tried logging in during a prev
 # execution. This value may be stale or invalid, so need to recover from that case
