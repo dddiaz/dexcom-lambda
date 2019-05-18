@@ -33,7 +33,7 @@ Resources:
         PollDexcomScheduledEvent:
           Type: Schedule
           Properties:
-            Schedule: rate(5 minutes)
+            Schedule: rate(2 minutes)
       Policies:
         # Give just CRUD permissions to one table
         - DynamoDBCrudPolicy:

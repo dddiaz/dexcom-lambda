@@ -9,11 +9,9 @@ import boto3
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-# Configure ME
+# This is a param of the AWS SAM template, and will be configured there.
 DEXCOM_ACCOUNT_NAME = os.environ['DEXCOM_ACCOUNT_NAME']
 DEXCOM_PASSWORD = os.environ['DEXCOM_PASSWORD']
-
-# These will automatically be configured by the aws sam template
 REGION = os.getenv('REGION', 'us-west-2')
 
 # I want lambda to try and use the already computed session id if it has already tried logging in during a prev
@@ -22,6 +20,10 @@ SESSION_ID = None
 
 
 def authorize():
+    """
+    Authorize againsts the dexcom api and save the global session ID
+    :return:
+    """
     logger.info("Attempting to authorize against the dexcom server and obtain a new session id...")
     url = "https://share1.dexcom.com/ShareWebServices/Services/General/LoginPublisherAccountByName"
     auth_body = dict(password=DEXCOM_PASSWORD,
@@ -38,6 +40,10 @@ def authorize():
 
 
 def refresh_token():
+    """
+    Refresh Session ID for dexcom if the global value is None
+    :return:
+    """
     global SESSION_ID
     if SESSION_ID:
         logger.info("Session ID is not none, so will not attempt to authenticate.")
@@ -48,6 +54,12 @@ def refresh_token():
 
 
 def fetch(minutes=1440, max_count=1):
+    """
+    Fetch a dexcom glucose reading from the server.
+    :param minutes:
+    :param max_count:
+    :return:
+    """
     global SESSION_ID
     querystring = f'https://share1.dexcom.com/ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues' \
         f'?sessionID={SESSION_ID}&minutes={minutes}&maxCount={max_count}'
@@ -111,6 +123,7 @@ def convert(response):
 
 
 def post_to_dynamo(glucose_data):
+    """Post the data structure to DynamoDB"""
     dynamodb = boto3.resource('dynamodb', region_name=REGION)
     table = dynamodb.Table('Glucose')
     response = table.put_item(
@@ -125,7 +138,8 @@ def run():
     data = convert(fetch())
     post_to_dynamo(data)
 
+
 def lambda_handler(event, context):
-    """TBD
+    """AWS Lambda Handler
     """
     run()
