@@ -67,4 +67,4 @@ https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.
 
 #### TODO
 - Add License?
-- Add launchstack url
+- Add launchstack url?
