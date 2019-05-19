@@ -72,3 +72,4 @@ https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.
 #### TODO
 - Add License?
 - Add launchstack url?
+- lower read write capacity units for dynamodb
