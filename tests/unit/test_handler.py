@@ -15,10 +15,12 @@ def test_convert():
  Value: 101,
  WT: '/Date(1426292039000)/' } ]
     """
-    expected = {'timestamp': 1426292016000, 'datetime': '03/13/2015, 17:13:36', 'trend': 4, 'direction': 'Flat', 'value': 101}
     result = app.convert(text)
-    assert result == expected
-
+    assert result['timestamp'] == 1426292016000
+    assert result['datetime'] == '03/13/2015, 17:13:36'
+    assert result['trend'] == 4
+    assert result['direction'] == 'Flat'
+    assert result['value'] == 101
 
 def test_lambda_handler():
     pass
