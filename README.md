@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/dddiaz/dexcom-lambda.svg?branch=master)](https://travis-ci.org/dddiaz/dexcom-lambda)  
 # dexcom-lambda
 AWS SAM (lambda) function to scrape real time glucose values from dexcom every 5 minutes.
 
