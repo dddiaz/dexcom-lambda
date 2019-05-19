@@ -5,6 +5,7 @@ import requests
 import datetime
 import logging
 import boto3
+from datetime import timezone
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -113,7 +114,7 @@ def convert(response):
     # TODO add hash
     data = {
         'timestamp': int(m[0]),
-        'datetime': datetime.datetime.fromtimestamp(int(m[0]) / 1000).strftime("%m/%d/%Y, %H:%M:%S"),
+        'datetime': datetime.datetime.fromtimestamp(int(m[0]) / 1000, tz=timezone.utc).strftime("%m/%d/%Y, %H:%M:%S"),
         'trend': int(m[3]),
         'direction': dexcom_directions[int(m[3])],
         'value': int(m[4])
