@@ -112,6 +112,7 @@ def convert(response):
     # TODO add some data validation here
     # What happens when data falls outside these expectations, add some failure logic here
     # TODO add hash
+    # Note this timezone param is actually important. need to be explicit with utc, or system will use local timezone
     data = {
         'timestamp': int(m[0]),
         'datetime': datetime.datetime.fromtimestamp(int(m[0]) / 1000, tz=timezone.utc).strftime("%m/%d/%Y, %H:%M:%S"),

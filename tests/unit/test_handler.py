@@ -1,7 +1,3 @@
-import json
-import re
-import pytest
-
 from cron import app
 
 
@@ -17,7 +13,7 @@ def test_convert():
     """
     result = app.convert(text)
     assert result['timestamp'] == 1426292016000
-    assert result['datetime'] == '03/13/2015, 17:13:36'
+    assert result['datetime'] == '03/14/2015, 00:13:36'
     assert result['trend'] == 4
     assert result['direction'] == 'Flat'
     assert result['value'] == 101
